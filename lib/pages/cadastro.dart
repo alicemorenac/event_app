@@ -1,114 +1,93 @@
+import 'package:event_app/controllers/controller_usuario_form.dart';
+import 'package:event_app/controllers/controller_usuarios.dart';
+import 'package:event_app/widgets/text_field.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter_mobx/flutter_mobx.dart';
+import 'package:provider/provider.dart';
 
 class Cadastro extends StatelessWidget {
+
   const Cadastro({super.key});
 
   @override
   Widget build(BuildContext context) {
+    final usrForm = Provider.of<ControllerUsuarioForm>(context);
+    final dbUsers = Provider.of<ControllerUsuarios>(context);
     return MaterialApp(
-      home: Scaffold(
-        appBar: AppBar(
-          backgroundColor: Colors.black,
-          // title: const Text(
-          //   'Cadastro',
-          //   style: TextStyle(
-          //     color: Colors.orange,
-          //     fontSize: 24,
-          //     fontWeight: FontWeight.bold,
-          //     fontStyle: FontStyle.italic,
-          //     fontFamily: 'Roboto',
-          //   ),
-          // ),
-        ),
-        backgroundColor: Colors.black,
-        body: Center(
-          child: RegistrationForm(),
-        ),
-      ),
-    );
-  }
-}
-
-class RegistrationForm extends StatefulWidget {
-  @override
-  _RegistrationFormState createState() => _RegistrationFormState();
-}
-
-class _RegistrationFormState extends State<RegistrationForm> {
-  final TextEditingController _nameController = TextEditingController();
-  final TextEditingController _emailController = TextEditingController();
-  final TextEditingController _passwordController = TextEditingController();
-
-  @override
-  Widget build(BuildContext context) {
-    return Padding(
-      padding: const EdgeInsets.all(16.0),
-      child: Column(
-        mainAxisAlignment: MainAxisAlignment.center,
-        children: <Widget>[
-          TextField(
-            controller: _nameController,
-            style: const TextStyle(color: Colors.white),
-            decoration: const InputDecoration(
-              labelText: 'Nome',
-              labelStyle: TextStyle(color: Colors.white),
-              focusedBorder: OutlineInputBorder(
-                borderSide: BorderSide(color: Colors.orange),
-              ),
-              enabledBorder: OutlineInputBorder(
-                borderSide: BorderSide(color: Colors.orange),
-              ),
-            ),
-          ),
-          const SizedBox(height: 20),
-          TextField(
-            controller: _emailController,
-            style: const TextStyle(color: Colors.white),
-            decoration: const InputDecoration(
-              labelText: 'Email',
-              labelStyle:  TextStyle(color: Colors.white),
-              focusedBorder: OutlineInputBorder(
-                borderSide:  BorderSide(color: Colors.orange),
-              ),
-              enabledBorder: OutlineInputBorder(
-                borderSide:  BorderSide(color: Colors.orange),
-              ),
-            ),
-          ),
-          const SizedBox(height: 20),
-          TextField(
-            controller: _passwordController,
-            obscureText: true,
-            style: const TextStyle(color: Colors.white),
-            decoration: const InputDecoration(
-              labelText: 'Senha',
-              labelStyle:  TextStyle(color: Colors.white),
-              focusedBorder: OutlineInputBorder(
-                borderSide:  BorderSide(color: Colors.orange),
-              ),
-              enabledBorder: OutlineInputBorder(
-                borderSide:  BorderSide(color: Colors.orange),
-              ),
-            ),
-          ),
-          const SizedBox(height: 20),
-          ElevatedButton(
-            onPressed: () {
-              // Implement registration functionality
-            },
-            style: ElevatedButton.styleFrom(
-              // primary: Colors.orange,
-              padding: const EdgeInsets.symmetric(horizontal: 50.0),
-            ),
-            child: const Text(
-              'Cadastrar',
-              style: TextStyle(
-                color: Colors.black, // Altera a cor do texto para preto
-              ),
-            ),
-          ),
-        ],
-      ),
-    );
+        home: Scaffold(
+            backgroundColor: Colors.black,
+            body: SafeArea(
+              child: Center(
+                  child: Column(
+                      mainAxisAlignment: MainAxisAlignment.center,
+                      crossAxisAlignment: CrossAxisAlignment.center,
+                      children: <Widget>[
+                    Padding(
+                      padding: const EdgeInsets.all(16.0),
+                      child: Column(
+                        mainAxisAlignment: MainAxisAlignment.center,
+                        children: <Widget>[
+                          const Text(
+                            'Cadastre-se',
+                            style: TextStyle(
+                              color: Colors.orange,
+                              fontSize: 24.0,
+                              fontWeight: FontWeight.bold,
+                            ),
+                          ),
+                          const SizedBox(height: 20.0),
+                          SizedBox(
+                            width: 100,
+                            height: 100,
+                            child: Image.asset('assets/evento.png'),
+                          ),
+                          const SizedBox(height: 20.0),
+                          const SizedBox(height: 20),
+                          Observer(builder: (_) {
+                            return textField(
+                              labelText: "Nome",
+                              onChanged: usrForm.setNome,
+                              errorText: usrForm.validateNome,
+                            );
+                          }),
+                          const SizedBox(height: 20),
+                          Observer(builder: (_) {
+                            return textField(
+                              labelText: "Email",
+                              onChanged: usrForm.setEmail,
+                              value: usrForm.email,
+                              errorText: usrForm.validateEmail,
+                            );
+                          }),
+                          const SizedBox(height: 20),
+                          Observer(builder: (_) {
+                            return textField(
+                              labelText: "Senha",
+                              onChanged: usrForm.setSenha,
+                              value: usrForm.senha,
+                              errorText: usrForm.validateSenha,
+                              obscureText: true,
+                            );
+                          }),
+                          const SizedBox(height: 20),
+                          ElevatedButton(
+                            onPressed: () {},
+                            style: ElevatedButton.styleFrom(
+                              padding:
+                                  const EdgeInsets.symmetric(horizontal: 50.0),
+                            ),
+                            child: const Text(
+                              'Cadastrar',
+                              style: TextStyle(
+                                color: Colors
+                                    .black, // Altera a cor do texto para preto
+                              ),
+                            ),
+                          ),
+                        ],
+                      ),
+                    ),
+                  ])),
+            )));
   }
 }

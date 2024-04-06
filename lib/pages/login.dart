@@ -1,21 +1,18 @@
-import 'dart:ffi';
-
 import 'package:flutter_mobx/flutter_mobx.dart';
 import 'package:event_app/controllers/controller_usuarios.dart';
 import 'package:event_app/models/usuario.dart';
 import 'package:event_app/controllers/controller_usuario_form.dart';
 import 'package:event_app/widgets/text_field.dart';
 import 'package:flutter/material.dart';
+import 'package:provider/provider.dart';
 
 class Login extends StatelessWidget {
   const Login({super.key});
 
   @override
   Widget build(BuildContext context) {
-    final usrForm = ControllerUsuarioForm();
-
-    final dbUsers = ControllerUsuarios();
-      
+    final usrForm = Provider.of<ControllerUsuarioForm>(context);
+    final dbUsers = Provider.of<ControllerUsuarios>(context);
 
     return MaterialApp(
       home: Scaffold(
@@ -81,7 +78,7 @@ class Login extends StatelessWidget {
 
                    if (u != null){
                     dbUsers.setMsg(null);
-                    //navegar para a tela home
+                    // Navigator.of(context).pushReplacementNamed('/home'); //criar essa tela
                    }
                   },
                   style: ElevatedButton.styleFrom(
@@ -98,7 +95,8 @@ class Login extends StatelessWidget {
                 const SizedBox(height: 20.0),
                 TextButton(
                   onPressed: () {
-                    // Implementar navegação para a tela de criação de conta
+                    usrForm.setNome('');
+                    Navigator.of(context).pushNamed('/cadastro');
                   },
                   child: const Text(
                     'Criar uma conta',

@@ -7,13 +7,24 @@ Widget textField({
   onChanged,
   required String Function() errorText,
   bool obscureText = false,
+  String ? value
 }) {
+  TextEditingController? controller;
+
+  if (value != null) {
+    controller = TextEditingController(text: value);
+    controller.selection = TextSelection.fromPosition(
+      TextPosition(offset: controller.text.length),
+    );
+  }
+
   return TextField(
     style: const TextStyle(color: Colors.white),
     onChanged: onChanged,
     obscureText: obscureText,
+    controller: controller,
     decoration: InputDecoration(
-      errorText: errorText !=  null ? errorText() != ''? errorText(): null  : null,
+      errorText: errorText !=  null ? errorText() != '' ? errorText(): null  : null,
       labelText: labelText,
       labelStyle: const TextStyle(color: Colors.white),
       focusedBorder: const OutlineInputBorder(

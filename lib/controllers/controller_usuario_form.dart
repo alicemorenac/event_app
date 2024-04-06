@@ -50,6 +50,14 @@ abstract class ControllerUsuarioFormBase with Store {
     this.senha = senha;
   }
 
+  String validateNome(){
+    if (nome.isEmpty || nome == ''){
+      return MESSSAGE;
+    }
+
+    return EMPTY;
+  }
+
 
   String validateEmail(){
     if (email.isEmpty || email == ''){

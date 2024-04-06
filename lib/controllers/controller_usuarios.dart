@@ -7,7 +7,7 @@ class ControllerUsuarios = ControllerUsuariosBase with _$ControllerUsuarios;
 abstract class ControllerUsuariosBase with Store {
   @observable
   List<Usuario> usuarios = [];
-  
+
   @observable
   String ? mensagem;
 
