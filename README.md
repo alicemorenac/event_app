@@ -1,6 +1,7 @@
 # event_app
 
-A new Flutter project.
+rodar o comando ```flutter packages get```
+rodar o comando ```flutter pub run build_runner build```
 
 ## Getting Started
 

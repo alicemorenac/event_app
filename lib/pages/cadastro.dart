@@ -8,16 +8,17 @@ class Cadastro extends StatelessWidget {
     return MaterialApp(
       home: Scaffold(
         appBar: AppBar(
-          title: Text(
-            'Cadastro',
-            style: TextStyle(
-              color: Colors.orange,
-              fontSize: 24,
-              fontWeight: FontWeight.bold,
-              fontStyle: FontStyle.italic,
-              fontFamily: 'Roboto',
-            ),
-          ),
+          backgroundColor: Colors.black,
+          // title: const Text(
+          //   'Cadastro',
+          //   style: TextStyle(
+          //     color: Colors.orange,
+          //     fontSize: 24,
+          //     fontWeight: FontWeight.bold,
+          //     fontStyle: FontStyle.italic,
+          //     fontFamily: 'Roboto',
+          //   ),
+          // ),
         ),
         backgroundColor: Colors.black,
         body: Center(
@@ -48,55 +49,55 @@ class _RegistrationFormState extends State<RegistrationForm> {
           TextField(
             controller: _nameController,
             style: const TextStyle(color: Colors.white),
-            decoration: InputDecoration(
+            decoration: const InputDecoration(
               labelText: 'Nome',
-              labelStyle: const TextStyle(color: Colors.white),
+              labelStyle: TextStyle(color: Colors.white),
               focusedBorder: OutlineInputBorder(
-                borderSide: const BorderSide(color: Colors.orange),
+                borderSide: BorderSide(color: Colors.orange),
               ),
               enabledBorder: OutlineInputBorder(
-                borderSide: const BorderSide(color: Colors.orange),
+                borderSide: BorderSide(color: Colors.orange),
               ),
             ),
           ),
-          SizedBox(height: 20),
+          const SizedBox(height: 20),
           TextField(
             controller: _emailController,
             style: const TextStyle(color: Colors.white),
-            decoration: InputDecoration(
+            decoration: const InputDecoration(
               labelText: 'Email',
-              labelStyle: const TextStyle(color: Colors.white),
+              labelStyle:  TextStyle(color: Colors.white),
               focusedBorder: OutlineInputBorder(
-                borderSide: const BorderSide(color: Colors.orange),
+                borderSide:  BorderSide(color: Colors.orange),
               ),
               enabledBorder: OutlineInputBorder(
-                borderSide: const BorderSide(color: Colors.orange),
+                borderSide:  BorderSide(color: Colors.orange),
               ),
             ),
           ),
-          SizedBox(height: 20),
+          const SizedBox(height: 20),
           TextField(
             controller: _passwordController,
             obscureText: true,
             style: const TextStyle(color: Colors.white),
-            decoration: InputDecoration(
+            decoration: const InputDecoration(
               labelText: 'Senha',
-              labelStyle: const TextStyle(color: Colors.white),
+              labelStyle:  TextStyle(color: Colors.white),
               focusedBorder: OutlineInputBorder(
-                borderSide: const BorderSide(color: Colors.orange),
+                borderSide:  BorderSide(color: Colors.orange),
               ),
               enabledBorder: OutlineInputBorder(
-                borderSide: const BorderSide(color: Colors.orange),
+                borderSide:  BorderSide(color: Colors.orange),
               ),
             ),
           ),
-          SizedBox(height: 20),
+          const SizedBox(height: 20),
           ElevatedButton(
             onPressed: () {
               // Implement registration functionality
             },
             style: ElevatedButton.styleFrom(
-              primary: Colors.orange,
+              // primary: Colors.orange,
               padding: const EdgeInsets.symmetric(horizontal: 50.0),
             ),
             child: const Text(
