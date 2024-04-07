@@ -41,6 +41,22 @@ mixin _$ControllerUsuarios on ControllerUsuariosBase, Store {
     });
   }
 
+  late final _$mensagemCadstroAtom =
+      Atom(name: 'ControllerUsuariosBase.mensagemCadstro', context: context);
+
+  @override
+  String? get mensagemCadstro {
+    _$mensagemCadstroAtom.reportRead();
+    return super.mensagemCadstro;
+  }
+
+  @override
+  set mensagemCadstro(String? value) {
+    _$mensagemCadstroAtom.reportWrite(value, super.mensagemCadstro, () {
+      super.mensagemCadstro = value;
+    });
+  }
+
   late final _$ControllerUsuariosBaseActionController =
       ActionController(name: 'ControllerUsuariosBase', context: context);
 
@@ -78,6 +94,17 @@ mixin _$ControllerUsuarios on ControllerUsuariosBase, Store {
   }
 
   @override
+  dynamic setMsgCadastro(String? msg) {
+    final _$actionInfo = _$ControllerUsuariosBaseActionController.startAction(
+        name: 'ControllerUsuariosBase.setMsgCadastro');
+    try {
+      return super.setMsgCadastro(msg);
+    } finally {
+      _$ControllerUsuariosBaseActionController.endAction(_$actionInfo);
+    }
+  }
+
+  @override
   Usuario? login(String email, String pass) {
     final _$actionInfo = _$ControllerUsuariosBaseActionController.startAction(
         name: 'ControllerUsuariosBase.login');
@@ -89,10 +116,22 @@ mixin _$ControllerUsuarios on ControllerUsuariosBase, Store {
   }
 
   @override
+  Usuario? cadastro(Usuario u) {
+    final _$actionInfo = _$ControllerUsuariosBaseActionController.startAction(
+        name: 'ControllerUsuariosBase.cadastro');
+    try {
+      return super.cadastro(u);
+    } finally {
+      _$ControllerUsuariosBaseActionController.endAction(_$actionInfo);
+    }
+  }
+
+  @override
   String toString() {
     return '''
 usuarios: ${usuarios},
-mensagem: ${mensagem}
+mensagem: ${mensagem},
+mensagemCadstro: ${mensagemCadstro}
     ''';
   }
 }

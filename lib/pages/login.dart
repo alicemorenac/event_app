@@ -78,7 +78,9 @@ class Login extends StatelessWidget {
 
                    if (u != null){
                     dbUsers.setMsg(null);
-                    // Navigator.of(context).pushReplacementNamed('/home'); //criar essa tela
+                    usrForm.setNome(u.nome);
+                    usrForm.setNome(u.id);
+                    Navigator.of(context).pushReplacementNamed('/home'); 
                    }
                   },
                   style: ElevatedButton.styleFrom(

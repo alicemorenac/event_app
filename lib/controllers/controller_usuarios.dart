@@ -10,6 +10,8 @@ abstract class ControllerUsuariosBase with Store {
 
   @observable
   String ? mensagem;
+  @observable
+  String ? mensagemCadstro;
 
   ControllerUsuariosBase() {
     setMsg(null);
@@ -35,6 +37,10 @@ abstract class ControllerUsuariosBase with Store {
   setMsg(String ? msg) {
     mensagem = msg;
   }
+  @action
+  setMsgCadastro(String ? msg) {
+    mensagemCadstro = msg;
+  }
 
   @action
   Usuario? login(String email, String pass) {
@@ -45,6 +51,16 @@ abstract class ControllerUsuariosBase with Store {
       setMsg('Usuario ou senha incorretos.');
       return null;
     }
+  }
+
+  @action
+  Usuario ? cadastro(Usuario u){
+    if (_findByEmail(u.email) != null){
+      setMsgCadastro('Usuario já existe.');
+      return null;
+    }
+    add(u);
+    return u;
   }
 
   Usuario ? _findByEmail(String email){

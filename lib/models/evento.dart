@@ -1,13 +1,15 @@
 import 'package:event_app/models/usuario.dart';
 
 class Evento {
-  final String nomeEvento;
-  final String localEvento;
-  final DateTime dataEvento;
+  String nomeEvento;
+  String descricaoEvento;
+  String localEvento;
+  DateTime dataEvento;
   List<Usuario> ? usuariosInteressados;
 
   Evento({
     required this.nomeEvento,
+    required this.descricaoEvento,
     required this.localEvento,
     required this.dataEvento,
     this.usuariosInteressados,
