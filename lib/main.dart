@@ -1,8 +1,13 @@
+import 'package:event_app/controllers/controller_comentarios.dart';
 import 'package:event_app/controllers/controller_eventos.dart';
 import 'package:event_app/controllers/controller_usuario_form.dart';
 import 'package:event_app/controllers/controller_usuarios.dart';
+import 'package:event_app/models/evento_model.dart';
 import 'package:event_app/pages/cadastro.dart';
+import 'package:event_app/pages/comentarios.dart';
 import 'package:event_app/pages/lista_eventos.dart';
+import 'package:event_app/widgets/modal_add_coment.dart';
+import 'package:event_app/widgets/modal_add_evento.dart';
 import 'package:provider/provider.dart';
 
 import './pages/login.dart';
@@ -25,11 +30,14 @@ class _MyHomeState extends State<Home> {
   // Adicione as páginas aqui
   List<Widget> body = const [
     ListaEventos(),
-    ListaEventos(),
+    Comentarios(),
   ];
 
   @override
   Widget build(BuildContext context) {
+    // final evento = Provider.of<EventoModel>(context);
+    // final listaEventos = Provider.of<ControllerEventos>(context);
+
     return Scaffold(
       backgroundColor: Colors.black,
       body: Center(child: body[_currentIndex]),
@@ -63,7 +71,11 @@ class _MyHomeState extends State<Home> {
             backgroundColor: Colors.purple,
             shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(50.0)),
             onPressed: () {
-              // Add your onPressed code here!
+              if(_currentIndex == 0){
+                modalNewEvento(context);
+              } else {
+                modalNewComment(context);
+              }
             },
             child: const Icon(Icons.add),
           ),
@@ -83,9 +95,11 @@ class Navigator extends StatelessWidget {
     return MultiProvider(
         providers: [
           Provider<ControllerUsuarios>(create: (_) => ControllerUsuarios()),
+          Provider<ControllerComentarios>(create: (_) => ControllerComentarios()),
+          Provider<EventoModel>(create: (_) => EventoModel()),
           Provider<ControllerEventos>(create: (_) => ControllerEventos()),
           Provider<ControllerUsuarioForm>(
-              create: (_) => ControllerUsuarioForm())
+              create: (_) => ControllerUsuarioForm()),
         ],
         child: MaterialApp(
           initialRoute: '/',

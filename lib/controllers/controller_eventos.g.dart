@@ -13,13 +13,13 @@ mixin _$ControllerEventos on ControllerEventosBase, Store {
       Atom(name: 'ControllerEventosBase.eventos', context: context);
 
   @override
-  List<Evento> get eventos {
+  ObservableList<EventoModel> get eventos {
     _$eventosAtom.reportRead();
     return super.eventos;
   }
 
   @override
-  set eventos(List<Evento> value) {
+  set eventos(ObservableList<EventoModel> value) {
     _$eventosAtom.reportWrite(value, super.eventos, () {
       super.eventos = value;
     });
@@ -29,11 +29,11 @@ mixin _$ControllerEventos on ControllerEventosBase, Store {
       ActionController(name: 'ControllerEventosBase', context: context);
 
   @override
-  dynamic add(Evento u) {
+  dynamic add(EventoModel e) {
     final _$actionInfo = _$ControllerEventosBaseActionController.startAction(
         name: 'ControllerEventosBase.add');
     try {
-      return super.add(u);
+      return super.add(e);
     } finally {
       _$ControllerEventosBaseActionController.endAction(_$actionInfo);
     }

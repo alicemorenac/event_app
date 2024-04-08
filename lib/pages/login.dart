@@ -79,7 +79,7 @@ class Login extends StatelessWidget {
                    if (u != null){
                     dbUsers.setMsg(null);
                     usrForm.setNome(u.nome);
-                    usrForm.setNome(u.id);
+                    usrForm.setId(u.id);
                     Navigator.of(context).pushReplacementNamed('/home'); 
                    }
                   },

@@ -1,7 +1,8 @@
 import 'package:event_app/models/evento.dart';
+import 'package:event_app/models/evento_model.dart';
 import 'package:flutter/material.dart';
 
-Widget cardEvento({required Evento evento}) {
+Widget cardEvento({required EventoModel evento}) {
   return Container(
     padding: const EdgeInsets.all(10.0),
     child: Center(
@@ -13,7 +14,7 @@ Widget cardEvento({required Evento evento}) {
               padding: const EdgeInsets.all(32.0),
               child: Column(
                 children: <Widget>[
-                  Text(evento.nomeEvento,
+                  Text('${evento.nomeEvento} - ${evento.id}',
                       style: const TextStyle(
                         color: Colors.white,
                       )),
@@ -21,7 +22,7 @@ Widget cardEvento({required Evento evento}) {
                   Image.asset('assets/evento.png'),
                   const Divider(),
                   const SizedBox(height: 5),
-                  Text(evento.descricaoEvento,
+                  Text('${evento.descricaoEvento}',
                       style: const TextStyle(
                         color: Colors.white,
                       )),

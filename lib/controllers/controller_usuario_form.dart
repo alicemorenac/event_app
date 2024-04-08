@@ -11,7 +11,6 @@ const MESSSAGE = 'Campo obrigatório.';
 const EMPTY = '';
 
 abstract class ControllerUsuarioFormBase with Store {
-  final dbUsers = ControllerUsuarios();
   
   @observable
   String id = '';

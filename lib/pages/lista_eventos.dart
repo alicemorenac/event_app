@@ -4,6 +4,7 @@ import 'package:event_app/controllers/controller_usuarios.dart';
 import 'package:event_app/models/evento.dart';
 import 'package:event_app/widgets/card_evento.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter_mobx/flutter_mobx.dart';
 import 'package:provider/provider.dart';
 
 class ListaEventos extends StatelessWidget {
@@ -37,22 +38,21 @@ class ListaEventos extends StatelessWidget {
                 mainAxisAlignment: MainAxisAlignment.center,
                 crossAxisAlignment: CrossAxisAlignment.center,
                 children: [
-                  const SizedBox(
-                      height:
-                          20), // Espaçamento entre o campo de entrada e a lista
-                  // Sua lista renderizada aqui
-                  ListView.builder(
-                    shrinkWrap:
-                        true, // Certifica-se de que a lista não expanda infinitamente
-                    physics:
-                        const NeverScrollableScrollPhysics(), // Impede a rolagem da lista
-                    padding: const EdgeInsets.all(8),
-                    itemCount: eventosController.eventos.length,
-                    itemBuilder: (BuildContext context, int index) {
-                      return cardEvento(
-                          evento: eventosController.eventos[index]);
-                    },
-                  ),
+                  const SizedBox(height: 20),
+                  Observer(builder: (_) {
+                    return ListView.builder(
+                      shrinkWrap:
+                          true, // Certifica-se de que a lista não expanda infinitamente
+                      physics:
+                          const NeverScrollableScrollPhysics(), // Impede a rolagem da lista
+                      padding: const EdgeInsets.all(8),
+                      itemCount: eventosController.eventos.length,
+                      itemBuilder: (BuildContext context, int index) {
+                        return cardEvento(
+                            evento: eventosController.eventos[index]);
+                      },
+                    );
+                  }),
                   const SizedBox(height: 40),
                 ]),
           ),
