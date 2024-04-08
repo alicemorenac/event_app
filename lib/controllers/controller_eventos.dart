@@ -6,7 +6,11 @@ class ControllerEventos = ControllerEventosBase with _$ControllerEventos;
 
 abstract class ControllerEventosBase with Store {
   @observable
-  ObservableList<EventoModel> eventos = ObservableList();
+  ObservableList<EventoModel> eventos = [
+    EventoModel(dataEvento: DateTime.now(), localEvento: 'Parazinho, RN', descricaoEvento: 'Encontro de programadores', nomeEvento: 'Meetup Dev'),
+    EventoModel(dataEvento: DateTime.now(), localEvento: 'Natal, RN', descricaoEvento: 'Encontro de mecanicos', nomeEvento: 'Parada auto'),
+    EventoModel(dataEvento: DateTime.now(), localEvento: 'João Câmara, RN', descricaoEvento: 'Reunião de associados e cooperativas', nomeEvento: 'Sou +'),
+  ].asObservable();
 
   @action
   add(EventoModel e) {

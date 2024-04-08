@@ -39,10 +39,10 @@ class _MyHomeState extends State<Home> {
     // final listaEventos = Provider.of<ControllerEventos>(context);
 
     return Scaffold(
-      backgroundColor: Colors.black,
+      backgroundColor: const Color.fromARGB(24, 44, 2, 97),
       body: Center(child: body[_currentIndex]),
       bottomNavigationBar: BottomNavigationBar(
-        backgroundColor: Colors.black,
+        backgroundColor: const Color.fromARGB(24, 44, 2, 97),
         items: const [
           BottomNavigationBarItem(
             label: '',
@@ -51,8 +51,8 @@ class _MyHomeState extends State<Home> {
           ),
           BottomNavigationBarItem(
             label: '',
-            icon: Icon(Icons.star, color: Colors.white),
-            activeIcon: Icon(Icons.star, color: Colors.purpleAccent),
+            icon: Icon(Icons.comment, color: Colors.white),
+            activeIcon: Icon(Icons.comment, color: Colors.purpleAccent),
           )
         ],
         onTap: (value) {
