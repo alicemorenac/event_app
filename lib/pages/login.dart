@@ -1,7 +1,6 @@
 import 'package:flutter_mobx/flutter_mobx.dart';
 import 'package:event_app/controllers/controller_usuarios.dart';
-import 'package:event_app/models/usuario.dart';
-import 'package:event_app/controllers/controller_usuario_form.dart';
+import 'package:event_app/models/usuario_model.dart';
 import 'package:event_app/widgets/text_field.dart';
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
@@ -11,7 +10,7 @@ class Login extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    final usrForm = Provider.of<ControllerUsuarioForm>(context);
+    final usrForm = Provider.of<UsuarioModel>(context);
     final dbUsers = Provider.of<ControllerUsuarios>(context);
 
     return MaterialApp(
@@ -74,14 +73,13 @@ class Login extends StatelessWidget {
                 const SizedBox(height: 20.0),
                 ElevatedButton(
                   onPressed: () {
-                   Usuario ? u = dbUsers.login(usrForm.email, usrForm.senha);
-
-                   if (u != null){
-                    dbUsers.setMsg(null);
-                    usrForm.setNome(u.nome);
-                    usrForm.setNome(u.id);
-                    Navigator.of(context).pushReplacementNamed('/home'); 
-                   }
+                      UsuarioModel ? u = dbUsers.login(usrForm.email, usrForm.senha);
+                      if (u != null){
+                        dbUsers.setMsg(null);
+                        usrForm.setNome(u.nome!);
+                        usrForm.setId(u.id!);
+                        Navigator.of(context).pushReplacementNamed('/home'); 
+                     }
                   },
                   style: ElevatedButton.styleFrom(
                     padding: const EdgeInsets.symmetric(horizontal: 50.0),

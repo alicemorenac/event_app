@@ -1,6 +1,5 @@
-import 'package:event_app/controllers/controller_usuario_form.dart';
 import 'package:event_app/controllers/controller_usuarios.dart';
-import 'package:event_app/models/usuario.dart';
+import 'package:event_app/models/usuario_model.dart';
 import 'package:event_app/widgets/text_field.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_mobx/flutter_mobx.dart';
@@ -11,7 +10,7 @@ class Cadastro extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    final usrForm = Provider.of<ControllerUsuarioForm>(context);
+    final usrForm = Provider.of<UsuarioModel>(context);
     final dbUsers = Provider.of<ControllerUsuarios>(context);
     return MaterialApp(
         home: Scaffold(
@@ -83,15 +82,10 @@ class Cadastro extends StatelessWidget {
                           const SizedBox(height: 20),
                           ElevatedButton(
                             onPressed: () {
-                              Usuario? u = dbUsers.cadastro(Usuario(
-                                  id: usrForm.id,
-                                  nome: usrForm.nome,
-                                  email: usrForm.email,
-                                  senha: usrForm.senha));
+                              UsuarioModel? u = dbUsers.cadastro(usrForm);
                               if (u != null) {
                                 dbUsers.setMsgCadastro(null);
-                                Navigator.of(context)
-                                    .pushReplacementNamed('/home');
+                                Navigator.of(context).pushReplacementNamed('/home'); 
                               }
                             },
                             style: ElevatedButton.styleFrom(
