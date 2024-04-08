@@ -15,6 +15,9 @@ abstract class ModelEventoBase with Store {
   String? localEvento = '';
   @observable
   DateTime? dataEvento = DateTime.now();
+  
+  @observable
+  bool checked = false;
 
   ModelEventoBase(
       {this.dataEvento,
@@ -48,6 +51,11 @@ abstract class ModelEventoBase with Store {
   @action
   setLocal(String localEvento) {
     this.localEvento = localEvento;
+  }
+
+  @action
+  setChekked(){
+    checked = !checked;
   }
 
   @action

@@ -1,13 +1,11 @@
 import 'package:event_app/controllers/controller_eventos.dart';
 import 'package:event_app/models/evento_model.dart';
-import 'package:event_app/utils/constantes.dart';
 import 'package:event_app/widgets/text_field.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_mobx/flutter_mobx.dart';
 import 'package:provider/provider.dart';
 
 void modalNewEvento(BuildContext context) {
-  double altura = Constantes.alturaDaTela(context);
   final evento = EventoModel();
   showModalBottomSheet<void>(
     context: context,
@@ -26,8 +24,8 @@ void modalNewEvento(BuildContext context) {
               Padding(
                   padding: const EdgeInsets.symmetric(vertical: 10),
                   child: SizedBox(
-                    width: 75,
-                    height: 75,
+                    width: 60,
+                    height: 60,
                     child: Image.asset('assets/evento.png'),
                   )),
               

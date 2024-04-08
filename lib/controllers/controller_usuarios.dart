@@ -1,4 +1,4 @@
-import 'package:event_app/models/usuario.dart';
+import 'package:event_app/models/usuario_model.dart';
 import 'package:mobx/mobx.dart';
 part 'controller_usuarios.g.dart';
 
@@ -6,7 +6,9 @@ class ControllerUsuarios = ControllerUsuariosBase with _$ControllerUsuarios;
 
 abstract class ControllerUsuariosBase with Store {
   @observable
-  List<Usuario> usuarios = [];
+  ObservableList<UsuarioModel> usuarios = [
+    UsuarioModel(nome: 'Mádson Neves', email: 'madson.neves@ufrn.edu.br', senha: '12345')
+    ].asObservable();
 
   @observable
   String ? mensagem;
@@ -15,21 +17,24 @@ abstract class ControllerUsuariosBase with Store {
 
   ControllerUsuariosBase() {
     setMsg(null);
-    add(Usuario(
-      id: '12123',
-      nome: 'Madson Neves',
-      email: 'madson.neves@ufrn.edu.br',
-      senha: '12345',
-    ));
+
+    // UsuarioModel u = UsuarioModel();
+
+    // u.id = '123123';
+    // u.nome = 'Madson Neves';
+    // u.email = 'madson.neves@ufrn.edu.br';
+    // u.senha = '12345';
+
+    // add(u);
   }
 
   @action
-  add(Usuario u) {
+  add(UsuarioModel u) {
     _findByEmail(u.email) == null ? usuarios.add(u) : null;
   }
 
   @action
-  remove(Usuario u) {
+  remove(UsuarioModel u) {
     usuarios.remove(u);
   }
 
@@ -43,7 +48,7 @@ abstract class ControllerUsuariosBase with Store {
   }
 
   @action
-  Usuario? login(String email, String pass) {
+  UsuarioModel? login(String ? email, String ? pass) {
     try {
       return usuarios
           .firstWhere((user) => user.email == email && user.senha == pass);
@@ -54,7 +59,7 @@ abstract class ControllerUsuariosBase with Store {
   }
 
   @action
-  Usuario ? cadastro(Usuario u){
+  UsuarioModel ? cadastro(UsuarioModel u){
     if (_findByEmail(u.email) != null){
       setMsgCadastro('Usuario já existe.');
       return null;
@@ -63,7 +68,7 @@ abstract class ControllerUsuariosBase with Store {
     return u;
   }
 
-  Usuario ? _findByEmail(String email){
+  UsuarioModel ? _findByEmail(String ? email){
     try {
         return usuarios.firstWhere((user) => user.email == email);
     } catch (e) {

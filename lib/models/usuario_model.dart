@@ -1,27 +1,24 @@
 import 'dart:math';
-
-import 'package:event_app/controllers/controller_usuarios.dart';
-import 'package:event_app/models/usuario.dart';
 import 'package:mobx/mobx.dart';
-part 'controller_usuario_form.g.dart';
+part 'usuario_model.g.dart';
 
-class ControllerUsuarioForm = ControllerUsuarioFormBase with _$ControllerUsuarioForm;
+class UsuarioModel = ControllerUsuarioModel with _$UsuarioModel;
 
 const MESSSAGE = 'Campo obrigatório.';
 const EMPTY = '';
 
-abstract class ControllerUsuarioFormBase with Store {
+abstract class ControllerUsuarioModel with Store {
   
   @observable
-  String id = '';
+  String ? id = '';
   @observable
-  String nome = '';
+  String ? nome = '';
   @observable
-  String email = '';
+  String ? email = '';
   @observable
-  String senha = '';
+  String ? senha = '';
 
-  ControllerUsuarioFormBase() {
+  ControllerUsuarioModel({this.nome, this.email, this.senha}) {
     int randomNumber = Random().nextInt(1000000);
     int timestamp = DateTime.now().millisecondsSinceEpoch;
     String uniqueString = '$randomNumber$timestamp';
@@ -50,7 +47,7 @@ abstract class ControllerUsuarioFormBase with Store {
   }
 
   String validateNome(){
-    if (nome.isEmpty || nome == ''){
+    if (nome!.isEmpty || nome == ''){
       return MESSSAGE;
     }
 
@@ -59,14 +56,14 @@ abstract class ControllerUsuarioFormBase with Store {
 
 
   String validateEmail(){
-    if (email.isEmpty || email == ''){
+    if (email == ''){
       return MESSSAGE;
     }
 
     return EMPTY;
   }
   String validateSenha(){
-    if (senha.isEmpty || senha == ''){
+    if (senha == ''){
       return MESSSAGE;
     }
 

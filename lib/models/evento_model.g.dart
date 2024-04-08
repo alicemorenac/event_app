@@ -88,6 +88,22 @@ mixin _$EventoModel on ModelEventoBase, Store {
     });
   }
 
+  late final _$checkedAtom =
+      Atom(name: 'ModelEventoBase.checked', context: context);
+
+  @override
+  bool get checked {
+    _$checkedAtom.reportRead();
+    return super.checked;
+  }
+
+  @override
+  set checked(bool value) {
+    _$checkedAtom.reportWrite(value, super.checked, () {
+      super.checked = value;
+    });
+  }
+
   late final _$ModelEventoBaseActionController =
       ActionController(name: 'ModelEventoBase', context: context);
 
@@ -136,6 +152,17 @@ mixin _$EventoModel on ModelEventoBase, Store {
   }
 
   @override
+  dynamic setChekked() {
+    final _$actionInfo = _$ModelEventoBaseActionController.startAction(
+        name: 'ModelEventoBase.setChekked');
+    try {
+      return super.setChekked();
+    } finally {
+      _$ModelEventoBaseActionController.endAction(_$actionInfo);
+    }
+  }
+
+  @override
   dynamic setData(DateTime? dataEvento) {
     final _$actionInfo = _$ModelEventoBaseActionController.startAction(
         name: 'ModelEventoBase.setData');
@@ -164,7 +191,8 @@ id: ${id},
 nomeEvento: ${nomeEvento},
 descricaoEvento: ${descricaoEvento},
 localEvento: ${localEvento},
-dataEvento: ${dataEvento}
+dataEvento: ${dataEvento},
+checked: ${checked}
     ''';
   }
 }

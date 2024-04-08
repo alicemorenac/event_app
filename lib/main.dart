@@ -1,8 +1,8 @@
 import 'package:event_app/controllers/controller_comentarios.dart';
 import 'package:event_app/controllers/controller_eventos.dart';
-import 'package:event_app/controllers/controller_usuario_form.dart';
 import 'package:event_app/controllers/controller_usuarios.dart';
 import 'package:event_app/models/evento_model.dart';
+import 'package:event_app/models/usuario_model.dart';
 import 'package:event_app/pages/cadastro.dart';
 import 'package:event_app/pages/comentarios.dart';
 import 'package:event_app/pages/lista_eventos.dart';
@@ -94,12 +94,11 @@ class Navigator extends StatelessWidget {
   Widget build(BuildContext context) {
     return MultiProvider(
         providers: [
+          Provider<UsuarioModel>(create: (_) => UsuarioModel()),
           Provider<ControllerUsuarios>(create: (_) => ControllerUsuarios()),
           Provider<ControllerComentarios>(create: (_) => ControllerComentarios()),
           Provider<EventoModel>(create: (_) => EventoModel()),
           Provider<ControllerEventos>(create: (_) => ControllerEventos()),
-          Provider<ControllerUsuarioForm>(
-              create: (_) => ControllerUsuarioForm()),
         ],
         child: MaterialApp(
           initialRoute: '/',

@@ -1,7 +1,5 @@
 import 'package:event_app/controllers/controller_eventos.dart';
-import 'package:event_app/controllers/controller_usuario_form.dart';
-import 'package:event_app/controllers/controller_usuarios.dart';
-import 'package:event_app/models/evento.dart';
+import 'package:event_app/models/usuario_model.dart';
 import 'package:event_app/widgets/card_evento.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_mobx/flutter_mobx.dart';
@@ -12,13 +10,13 @@ class ListaEventos extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     final eventosController = Provider.of<ControllerEventos>(context);
-    final usrForm = Provider.of<ControllerUsuarioForm>(context);
+    final usrForm = Provider.of<UsuarioModel>(context);
 
     return Scaffold(
       backgroundColor: Colors.black,
       appBar: AppBar(
         backgroundColor: Colors.black,
-        title: Text(usrForm.email,
+        title: Text('${usrForm.email}',
             style: const TextStyle(
               color: Colors.white,
             )),
@@ -49,6 +47,7 @@ class ListaEventos extends StatelessWidget {
                       itemCount: eventosController.eventos.length,
                       itemBuilder: (BuildContext context, int index) {
                         return cardEvento(
+                          context: context,
                             evento: eventosController.eventos[index]);
                       },
                     );

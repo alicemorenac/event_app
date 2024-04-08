@@ -13,13 +13,13 @@ mixin _$ControllerUsuarios on ControllerUsuariosBase, Store {
       Atom(name: 'ControllerUsuariosBase.usuarios', context: context);
 
   @override
-  List<Usuario> get usuarios {
+  ObservableList<UsuarioModel> get usuarios {
     _$usuariosAtom.reportRead();
     return super.usuarios;
   }
 
   @override
-  set usuarios(List<Usuario> value) {
+  set usuarios(ObservableList<UsuarioModel> value) {
     _$usuariosAtom.reportWrite(value, super.usuarios, () {
       super.usuarios = value;
     });
@@ -61,7 +61,7 @@ mixin _$ControllerUsuarios on ControllerUsuariosBase, Store {
       ActionController(name: 'ControllerUsuariosBase', context: context);
 
   @override
-  dynamic add(Usuario u) {
+  dynamic add(UsuarioModel u) {
     final _$actionInfo = _$ControllerUsuariosBaseActionController.startAction(
         name: 'ControllerUsuariosBase.add');
     try {
@@ -72,7 +72,7 @@ mixin _$ControllerUsuarios on ControllerUsuariosBase, Store {
   }
 
   @override
-  dynamic remove(Usuario u) {
+  dynamic remove(UsuarioModel u) {
     final _$actionInfo = _$ControllerUsuariosBaseActionController.startAction(
         name: 'ControllerUsuariosBase.remove');
     try {
@@ -105,7 +105,7 @@ mixin _$ControllerUsuarios on ControllerUsuariosBase, Store {
   }
 
   @override
-  Usuario? login(String email, String pass) {
+  UsuarioModel? login(String? email, String? pass) {
     final _$actionInfo = _$ControllerUsuariosBaseActionController.startAction(
         name: 'ControllerUsuariosBase.login');
     try {
@@ -116,7 +116,7 @@ mixin _$ControllerUsuarios on ControllerUsuariosBase, Store {
   }
 
   @override
-  Usuario? cadastro(Usuario u) {
+  UsuarioModel? cadastro(UsuarioModel u) {
     final _$actionInfo = _$ControllerUsuariosBaseActionController.startAction(
         name: 'ControllerUsuariosBase.cadastro');
     try {
