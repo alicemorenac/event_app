@@ -7,7 +7,8 @@ class ControllerUsuarios = ControllerUsuariosBase with _$ControllerUsuarios;
 abstract class ControllerUsuariosBase with Store {
   @observable
   ObservableList<UsuarioModel> usuarios = [
-    UsuarioModel(nome: 'Mádson Neves', email: 'madson.neves@ufrn.edu.br', senha: '12345')
+      UsuarioModel(nome: 'Mádson Neves', email: 'madson.neves@ufrn.edu.br', senha: '12345'),
+      UsuarioModel(nome: 'Pedro Cantidio', email: 'cantidio@ufrn.edu.br', senha: '12345'),
     ].asObservable();
 
   @observable
@@ -17,15 +18,6 @@ abstract class ControllerUsuariosBase with Store {
 
   ControllerUsuariosBase() {
     setMsg(null);
-
-    // UsuarioModel u = UsuarioModel();
-
-    // u.id = '123123';
-    // u.nome = 'Madson Neves';
-    // u.email = 'madson.neves@ufrn.edu.br';
-    // u.senha = '12345';
-
-    // add(u);
   }
 
   @action

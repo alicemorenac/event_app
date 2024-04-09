@@ -21,11 +21,10 @@ Column textLabel({
         ),
       ),
       SizedBox(
-        width:
-            200, // Defina a largura máxima do texto para quebrar corretamente
+        width: 200,
         child: Text(
           value!,
-          softWrap: true, // Permite que o texto seja quebrado em várias linhas
+          softWrap: true,
           style: const TextStyle(
             color: Colors.white,
             fontSize: 14,

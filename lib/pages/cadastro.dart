@@ -85,7 +85,10 @@ class Cadastro extends StatelessWidget {
                               UsuarioModel? u = dbUsers.cadastro(usrForm);
                               if (u != null) {
                                 dbUsers.setMsgCadastro(null);
-                                Navigator.of(context).pushReplacementNamed('/home'); 
+                                 Navigator.of(context).pushNamedAndRemoveUntil(
+                                  '/home',
+                                  (Route<dynamic> route) => false, // Remove todas as rotas existentes
+                                );
                               }
                             },
                             style: ElevatedButton.styleFrom(

@@ -16,7 +16,7 @@ class ListaEventos extends StatelessWidget {
       backgroundColor: Colors.black,
       appBar: AppBar(
         backgroundColor: Colors.black,
-        title: Text('${usrForm.email}',
+        title: Text('${usrForm.nome}',
             style: const TextStyle(
               color: Colors.white,
             )),
@@ -24,7 +24,32 @@ class ListaEventos extends StatelessWidget {
           IconButton(
             icon: const Icon(Icons.logout, color: Colors.white),
             onPressed: () {
-              // Adicione a lógica para logout aqui
+               showDialog(
+                  context: context,
+                  builder: (BuildContext context) {
+                    return AlertDialog(
+                      title: const Text('Sair'),
+                      content: const Text('Tem certeza que deseja fazer sair da aplicação?'),
+                      actions: <Widget>[
+                        TextButton(
+                          onPressed: () {
+                            Navigator.of(context).pop(false); // Cancela o logout
+                          },
+                          child: const Text('Cancelar'),
+                        ),
+                        TextButton(
+                          onPressed: () {
+                            Navigator.of(context).pushNamedAndRemoveUntil(
+                              '/',
+                              (Route<dynamic> route) => false, // Remove todas as rotas existentes
+                            );
+                          },
+                          child: const Text('Sair'),
+                        ),
+                      ],
+                    );
+                  },
+                );
             },
           ),
         ],
