@@ -5,12 +5,18 @@ import 'package:flutter/material.dart';
 import 'package:flutter_mobx/flutter_mobx.dart';
 import 'package:provider/provider.dart';
 
-class Cadastro extends StatelessWidget {
+
+class Cadastro extends StatefulWidget {
   const Cadastro({super.key});
 
   @override
+  State<Cadastro> createState() => _CadastroState();
+}
+
+class _CadastroState extends State<Cadastro> {
+  @override
   Widget build(BuildContext context) {
-    final usrForm = Provider.of<UsuarioModel>(context);
+ final usrForm = Provider.of<UsuarioModel>(context);
     final dbUsers = Provider.of<ControllerUsuarios>(context);
     return MaterialApp(
         home: Scaffold(

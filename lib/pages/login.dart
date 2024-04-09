@@ -5,9 +5,14 @@ import 'package:event_app/widgets/text_field.dart';
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 
-class Login extends StatelessWidget {
+class Login extends StatefulWidget {
   const Login({super.key});
 
+  @override
+  State<Login> createState() => _LoginState();
+}
+
+class _LoginState extends State<Login> {
   @override
   Widget build(BuildContext context) {
     final usrForm = Provider.of<UsuarioModel>(context);
@@ -73,7 +78,7 @@ class Login extends StatelessWidget {
                 const SizedBox(height: 20.0),
                 ElevatedButton(
                   onPressed: () {
-                      UsuarioModel ? u = dbUsers.login(usrForm.email, usrForm.senha);
+                      UsuarioModel ? u = dbUsers.login(usrForm.email!, usrForm.senha!);
                       if (u != null){
                         dbUsers.setMsg(null);
                         usrForm.setNome(u.nome!);
