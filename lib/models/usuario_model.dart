@@ -1,4 +1,6 @@
+import 'dart:convert';
 import 'dart:math';
+import 'package:event_app/api/Api.dart';
 import 'package:mobx/mobx.dart';
 part 'usuario_model.g.dart';
 
@@ -18,12 +20,35 @@ abstract class ControllerUsuarioModel with Store {
   @observable
   String ? senha = '';
 
-  ControllerUsuarioModel({this.nome, this.email, this.senha}) {
-    int randomNumber = Random().nextInt(1000000);
-    int timestamp = DateTime.now().millisecondsSinceEpoch;
-    String uniqueString = '$randomNumber$timestamp';
+  ControllerUsuarioModel({this.id, this.nome, this.email, this.senha});
 
-    setId(uniqueString);
+  @action
+  Future<dynamic> login(String email, String senha) async {
+    Map<String, String> data = {
+      "email": email,
+      "senha": senha
+    };
+
+    final response = await ApiClient().POST("/usuarios/login", data);
+
+    if (response.statusCode != 200) throw Error();
+
+    return response.body;
+  }
+
+  @action
+  Future<dynamic> cadastro(String nome, String email, String senha) async {
+    Map<String, String> data = {
+      "nome": nome,
+      "email": email,
+      "senha": senha
+    };
+    
+    final response = await ApiClient().POST("/usuarios/", data);
+
+    if (response.statusCode != 200) throw Error();
+
+    return response.body;
   }
 
 
@@ -70,5 +95,7 @@ abstract class ControllerUsuarioModel with Store {
     return EMPTY;
   }
 }
+
+
 
 
