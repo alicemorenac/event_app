@@ -1,7 +1,10 @@
+import 'package:event_app/controllers/controller_eventos.dart';
 import 'package:event_app/models/evento_model.dart';
+import 'package:event_app/widgets/modal_add_evento.dart';
 import 'package:event_app/widgets/modal_view_event.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_mobx/flutter_mobx.dart';
+import 'package:provider/provider.dart';
 
 Column textLabel({
   String? label,
@@ -35,7 +38,15 @@ Column textLabel({
   );
 }
 
-Widget cardEvento({BuildContext? context, required EventoModel evento}) {
+Widget cardEvento({required BuildContext context, required EventoModel evento, bool meus_eventos = false}) {
+  final eventos = Provider.of<ControllerEventos>(context);
+
+
+  void _deletar(EventoModel _evento) async {
+    Navigator.of(context).pop(false); 
+    await eventos.deletar_evento(_evento);
+  }
+
   return Container(
     padding: const EdgeInsets.all(10.0),
     child: Center(
@@ -102,13 +113,13 @@ Widget cardEvento({BuildContext? context, required EventoModel evento}) {
                               decoration: BoxDecoration(
                                 border: Border.all(
                                     color: Colors
-                                        .orange), // Define a cor da borda como roxa
+                                        .orange),
                                 borderRadius: BorderRadius.circular(
-                                    8), // Define a borda arredondada
+                                    8),
                               ),
                               child: TextButton(
                                 onPressed: () {
-                                  modalVisualizarEvento(context!, evento);
+                                  modalVisualizarEvento(context, evento);
                                 },
                                 child: const Text(
                                   'VER EVENTO',
@@ -119,17 +130,61 @@ Widget cardEvento({BuildContext? context, required EventoModel evento}) {
                                 ),
                               ),
                             ),
+
+                            if(meus_eventos)
+                             Row(
+                                children: [
+                                  IconButton(
+                                    onPressed: () {
+                                      modalNewEvento(context, evento);
+                                    },
+                                    icon: const Icon(
+                                      Icons.edit,
+                                      color: Colors.white,
+                                    ),
+                                  ),
+                                  const SizedBox(width: 8), // Espaçamento entre os botões
+                                  IconButton(
+                                    onPressed: () {
+                                      showDialog(
+                                        context: context,
+                                        builder: (BuildContext context) {
+                                          return AlertDialog(
+                                            title: const Text('Exluir'),
+                                            content: const Text('Tem certeza que deseja excluir o evento?'),
+                                            actions: <Widget>[
+                                              TextButton(
+                                                onPressed: () {
+                                                  Navigator.of(context).pop(false); // Cancela o logout
+                                                },
+                                                child: const Text('Cancelar'),
+                                              ),
+                                              TextButton(
+                                                onPressed:() { _deletar(evento);},
+                                                child: const Text('Exluir'),
+                                              ),
+                                            ],
+                                          );
+                                        },
+                                      );
+                                    },
+                                    icon: const Icon(
+                                      Icons.delete,
+                                      color: Colors.white,
+                                    ),
+                                  ),
+                                ],
+                              ),
+
+                            if(!meus_eventos)
+                              Observer(builder: (_) {
+                                return IconButton(
+                                    onPressed: () {
+                                      eventos.tooggle_favorito(evento);
+                                    },
+                                    icon: Icon(Icons.star, color: eventos.isFavorite(evento) ? Colors.orange: Colors.white));
+                              }),
                             // const Divider(),
-                            Observer(builder: (_) {
-                              return IconButton(
-                                  onPressed: () {
-                                    evento.setChekked();
-                                  },
-                                  icon: Icon(Icons.star,
-                                      color: evento.checked
-                                          ? Colors.orange
-                                          : Colors.white));
-                            }),
                           ])),
                 ],
               ),
