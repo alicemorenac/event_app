@@ -1,3 +1,4 @@
+import 'package:event_app/auth/auth.dart';
 import 'package:event_app/controllers/controller_comentarios.dart';
 import 'package:event_app/controllers/controller_eventos.dart';
 import 'package:event_app/controllers/controller_usuarios.dart';
@@ -6,6 +7,8 @@ import 'package:event_app/models/usuario_model.dart';
 import 'package:event_app/pages/cadastro.dart';
 import 'package:event_app/pages/comentarios.dart';
 import 'package:event_app/pages/lista_eventos.dart';
+import 'package:event_app/pages/splash.dart';
+import 'package:event_app/utils/app_routes.dart';
 import 'package:event_app/widgets/modal_add_coment.dart';
 import 'package:event_app/widgets/modal_add_evento.dart';
 import 'package:provider/provider.dart';
@@ -14,7 +17,16 @@ import './pages/login.dart';
 import 'package:flutter/material.dart';
 
 void main() {
-  runApp(const Navigator());
+  // runApp();
+
+  runApp(MultiProvider(providers: [
+    ChangeNotifierProvider(create: (_) => Auth()),
+    ChangeNotifierProvider<EventoModel>(create: (_) => EventoModel()),
+    Provider<UsuarioModel>(create: (_) => UsuarioModel()),
+    Provider<ControllerUsuarios>(create: (_) => ControllerUsuarios()),
+    Provider<ControllerComentarios>(create: (_) => ControllerComentarios()),
+    Provider<ControllerEventos>(create: (_) => ControllerEventos()),
+  ], child: const Navigator()));
 }
 
 class Home extends StatefulWidget {
@@ -69,10 +81,11 @@ class _MyHomeState extends State<Home> {
           FloatingActionButton.large(
             foregroundColor: Colors.white,
             backgroundColor: Colors.purple,
-            shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(50.0)),
+            shape: RoundedRectangleBorder(
+                borderRadius: BorderRadius.circular(50.0)),
             onPressed: () {
-              if(_currentIndex == 0){
-                modalNewEvento(context);
+              if (_currentIndex == 0) {
+                modalNewEvento(context, null);
               } else {
                 modalNewComment(context);
               }
@@ -87,26 +100,27 @@ class _MyHomeState extends State<Home> {
   // titleBox(String s) {}
 }
 
+
+
 class Navigator extends StatelessWidget {
-  const Navigator({super.key});
+  const Navigator({Key? key});
 
   @override
   Widget build(BuildContext context) {
-    return MultiProvider(
-        providers: [
-          Provider<UsuarioModel>(create: (_) => UsuarioModel()),
-          Provider<ControllerUsuarios>(create: (_) => ControllerUsuarios()),
-          Provider<ControllerComentarios>(create: (_) => ControllerComentarios()),
-          Provider<EventoModel>(create: (_) => EventoModel()),
-          Provider<ControllerEventos>(create: (_) => ControllerEventos()),
-        ],
-        child: MaterialApp(
-          initialRoute: '/',
+    return Consumer<Auth>(
+      builder: (context, auth, child) {
+        return MaterialApp(
+          initialRoute: AppRoutes.SPLASH,
           routes: {
-            '/': (context) => const Login(),
-            '/home': (context) => const Home(),
-            '/cadastro': (context) => const Cadastro(),
+            AppRoutes.SPLASH: (context) => const SplashScreen(),
+            AppRoutes.LOGIN: (context) => const Login(),
+            AppRoutes.HOME: (context) => const Home(),
+            AppRoutes.CADASTRO: (context) => const Cadastro(),
           },
-        ));
+        );
+      },
+    );
   }
 }
+
+

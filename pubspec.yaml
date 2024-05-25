@@ -39,6 +39,8 @@ dependencies:
   provider:
   mobx:
   flutter_mobx:
+  http: ^0.13.5
+  shared_preferences: ^2.0.6 
 
 dev_dependencies:
   mobx_codegen:
