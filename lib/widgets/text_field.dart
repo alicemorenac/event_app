@@ -7,9 +7,14 @@ Widget textField({
   onChanged,
   required String Function() errorText,
   bool obscureText = false,
-  String ? value
+  String ? value,
+  TextEditingController ? controll,
 }) {
   TextEditingController? controller;
+
+  if(controll != null){
+    controller = controll;
+  }
 
   if (value != null) {
     controller = TextEditingController(text: value);
