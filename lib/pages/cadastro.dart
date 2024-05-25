@@ -1,10 +1,12 @@
+import 'dart:convert';
+
+import 'package:event_app/auth/auth.dart';
 import 'package:event_app/controllers/controller_usuarios.dart';
 import 'package:event_app/models/usuario_model.dart';
 import 'package:event_app/widgets/text_field.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_mobx/flutter_mobx.dart';
 import 'package:provider/provider.dart';
-
 
 class Cadastro extends StatefulWidget {
   const Cadastro({super.key});
@@ -14,12 +16,57 @@ class Cadastro extends StatefulWidget {
 }
 
 class _CadastroState extends State<Cadastro> {
+  bool isLoad = false;
+
+  final TextEditingController _nameController = TextEditingController();
+  final TextEditingController _emailController = TextEditingController();
+  final TextEditingController _passwordController = TextEditingController();
+
+  String message = "";
+
+  Future<void> _cadastrar() async {
+    String nome = _nameController.text;
+    String email = _emailController.text;
+    String password = _passwordController.text;
+
+    if (email.isEmpty || password.isEmpty || nome.isEmpty) {
+      setState(() {
+        message = "Digite os dados corretamente";
+      });
+      return;
+    }
+
+    setState(() {
+      isLoad = true;
+    });
+
+    try {
+      final data = await Provider.of<UsuarioModel>(
+        context,
+        listen: false,
+      ).cadastro(nome, email, password);
+
+      final Map<String, dynamic> parsedJson = jsonDecode(data);
+      await Provider.of<Auth>(context, listen: false)
+          .set_user(parsedJson['id'], parsedJson['nome'], parsedJson['email']);
+      Navigator.of(context).pushReplacementNamed('/home');
+    } catch (e) {
+      ScaffoldMessenger.of(context).hideCurrentSnackBar();
+      ScaffoldMessenger.of(context).showSnackBar(
+        const SnackBar(content: Text('Não foi possivel cadastrar o usuário')),
+      );
+    } finally {
+      setState(() {
+        isLoad = false;
+      });
+    }
+  }
+
   @override
   Widget build(BuildContext context) {
- final usrForm = Provider.of<UsuarioModel>(context);
+    final usrForm = Provider.of<UsuarioModel>(context);
     final dbUsers = Provider.of<ControllerUsuarios>(context);
-    return MaterialApp(
-        home: Scaffold(
+    return Scaffold(
             backgroundColor: Colors.black,
             body: SafeArea(
               child: Center(
@@ -48,71 +95,69 @@ class _CadastroState extends State<Cadastro> {
                           ),
                           const SizedBox(height: 20.0),
                           const SizedBox(height: 20),
-                          Observer(builder: (_) {
-                            return textField(
-                              labelText: "Nome",
-                              onChanged: usrForm.setNome,
-                              errorText: usrForm.validateNome,
-                            );
-                          }),
+                          textField(
+                            labelText: "Nome",
+                            controll: _nameController,
+                            errorText: () => "",
+                          ),
                           const SizedBox(height: 20),
-                          Observer(builder: (_) {
-                            return textField(
-                              labelText: "Email",
-                              onChanged: usrForm.setEmail,
-                              value: usrForm.email,
-                              errorText: usrForm.validateEmail,
-                            );
-                          }),
+                          textField(
+                            labelText: "Email",
+                            controll: _emailController,
+                            errorText: () => "",
+                          ),
                           const SizedBox(height: 20),
-                          Observer(builder: (_) {
-                            return textField(
-                              labelText: "Senha",
-                              onChanged: usrForm.setSenha,
-                              value: usrForm.senha,
-                              errorText: usrForm.validateSenha,
-                              obscureText: true,
-                            );
-                          }),
+                          textField(
+                            labelText: "Senha",
+                            controll: _passwordController,
+                            errorText: () => "",
+                            obscureText: true,
+                          ),
                           const SizedBox(height: 20),
-                          Observer(builder: (_) {
-                            if (dbUsers.mensagemCadstro != null) {
-                              return Text(
-                                '${dbUsers.mensagemCadstro}',
-                                style: const TextStyle(
-                                    color: Colors.red, fontSize: 10.0),
-                              );
-                            }
-                            return const SizedBox(height: 0);
-                          }),
+                          if (message.isNotEmpty)
+                            Text(
+                              '${message}',
+                              style: const TextStyle(
+                                  color: Colors.red, fontSize: 10.0),
+                            ),
                           const SizedBox(height: 20),
                           ElevatedButton(
                             onPressed: () {
-                              UsuarioModel? u = dbUsers.cadastro(usrForm);
-                              if (u != null) {
-                                dbUsers.setMsgCadastro(null);
-                                 Navigator.of(context).pushNamedAndRemoveUntil(
-                                  '/home',
-                                  (Route<dynamic> route) => false, // Remove todas as rotas existentes
-                                );
-                              }
+                              _cadastrar(); // Chamar a função de login
                             },
                             style: ElevatedButton.styleFrom(
                               padding:
                                   const EdgeInsets.symmetric(horizontal: 50.0),
                             ),
-                            child: const Text(
-                              'Cadastrar',
-                              style: TextStyle(
-                                color: Colors
-                                    .black, // Altera a cor do texto para preto
-                              ),
+                            child: Column(
+                              mainAxisAlignment: MainAxisAlignment.center,
+                              children: [
+                                if (isLoad)
+                                  Container(
+                                    child: const CircularProgressIndicator(
+                                      valueColor: AlwaysStoppedAnimation<Color>(
+                                          Colors.black),
+                                    ),
+                                  ),
+                                if (!isLoad) // Adicionar o texto dentro de outra condição
+                                  const Text(
+                                    'Cadastrar',
+                                    style: TextStyle(
+                                      color: Colors.black,
+                                      fontSize: 18.0,
+                                    ),
+                                  ),
+                                const SizedBox(
+                                    width:
+                                        10), // Adicionar um espaço entre o texto e o indicador de carregamento
+                              ],
                             ),
                           ),
                         ],
                       ),
                     ),
                   ])),
-            )));
+            ));
   }
 }
+
