@@ -1,7 +1,6 @@
 import 'dart:convert';
 
 import 'package:event_app/api/Api.dart';
-import 'package:event_app/auth/auth.dart';
 import 'package:event_app/models/evento_model.dart';
 import 'package:mobx/mobx.dart';
 import 'package:shared_preferences/shared_preferences.dart';
@@ -45,6 +44,7 @@ abstract class ControllerEventosBase with Store {
 
   @action
   Future<void> trazer_favoritos() async {
+    _favoritos = ObservableList.of([]);
     final _preff =  await SharedPreferences.getInstance();
     String ? id = _preff.getString('id');
 
@@ -56,9 +56,9 @@ abstract class ControllerEventosBase with Store {
     List<dynamic> jsonList = jsonDecode(response.body);
 
     for (int i = 0; i < jsonList.length; i++){
-      final id = jsonList[i]['id_evento'];
-      if(jsonList[i]['id_usuario'] == id){
-        final evResponse = await ApiClient().GET('/eventos/$id');
+      final id_evento = jsonList[i]['id_evento'];
+      if(jsonList[i]['id_usuario'].toString() == id){
+        final evResponse = await ApiClient().GET('/eventos/$id_evento');
 
         if(evResponse.statusCode == 200){
           _favoritos.add(EventoModel.fromJson(jsonDecode(evResponse.body)));
