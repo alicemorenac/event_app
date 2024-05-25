@@ -1,82 +1,80 @@
-import 'dart:math';
-import 'package:mobx/mobx.dart';
-part 'evento_model.g.dart';
+import 'package:flutter/material.dart';
+class EventoModel extends ChangeNotifier {
+  String? id;
+  String? nomeEvento;
+  String? descricaoEvento;
+  String? localEvento;
+  DateTime? dataEvento;
 
-class EventoModel = ModelEventoBase with _$EventoModel;
-
-abstract class ModelEventoBase with Store {
-  @observable
-  String? id = '';
-  @observable
-  String? nomeEvento = '';
-  @observable
-  String? descricaoEvento = '';
-  @observable
-  String? localEvento = '';
-  @observable
-  DateTime? dataEvento = DateTime.now();
-  
-  @observable
-  bool checked = false;
-
-  ModelEventoBase(
-      {this.dataEvento,
-      this.descricaoEvento,
-      this.localEvento,
-      this.nomeEvento}) {
-    setData(dataEvento);
+  EventoModel({
+    this.id,
+    this.dataEvento,
+    this.descricaoEvento,
+    this.localEvento,
+    this.nomeEvento,
+  }){
+    dataEvento = DateTime.now();
   }
 
-  @action
-  setId(String ? id) {
-    if (id == null){
-      int randomNumber = Random().nextInt(1000000);
-      int timestamp = DateTime.now().millisecondsSinceEpoch;
-      id = '$randomNumber$timestamp';
-    }
-
+  void setId(String ? id){
     this.id = id;
+    notifyListeners();
   }
 
-  @action
-  setNome(String nomeEvento) {
+  void setNome(String ? nomeEvento) {
     this.nomeEvento = nomeEvento;
+    notifyListeners();
   }
 
-  @action
-  setDescricao(String descricaoEvento) {
+  void setDescricao(String ? descricaoEvento) {
     this.descricaoEvento = descricaoEvento;
+    notifyListeners();
   }
 
-  @action
-  setLocal(String localEvento) {
+  void setLocal(String ? localEvento) {
     this.localEvento = localEvento;
+    notifyListeners();
   }
 
-  @action
-  setChekked(){
-    checked = !checked;
-  }
-
-  @action
-  setData(DateTime? dataEvento) {
+  void setData(DateTime? dataEvento) {
     if (dataEvento != null) {
       this.dataEvento = dataEvento;
     } else {
       this.dataEvento = DateTime.now();
     }
+    notifyListeners();
   }
 
-  @action
-  reset(){
-    setId('');
-    setNome('');
-    setDescricao('');
-    setLocal('');
-    setData(DateTime.now());
+  void reset() {
+    id = '';
+    nomeEvento = '';
+    descricaoEvento = '';
+    localEvento = '';
+    dataEvento = DateTime.now();
   }
 
-  String ? formatarData() {
+  factory EventoModel.fromJson(Map<String, dynamic> json) {
+    return EventoModel(
+      id: json['id'].toString(),
+      nomeEvento: json['nome'],
+      descricaoEvento: json['descricao'],
+      localEvento: json['local'],
+      dataEvento: DateTime.parse(json['data']),
+    );
+  }
+
+  Map<String, dynamic> toJson() {
+    return {
+      'id': id,
+      'nome': nomeEvento,
+      'descricao': descricaoEvento,
+      'local': localEvento,
+      'data': dataEvento!.toIso8601String(),
+    };
+  }
+
+  String? formatarData() {
+    if (dataEvento == null) return null;
     int dia = dataEvento!.day;
     int mes = dataEvento!.month;
     int ano = dataEvento!.year;
