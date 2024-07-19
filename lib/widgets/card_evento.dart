@@ -71,7 +71,7 @@ Widget cardEvento({required BuildContext context, required EventoModel evento, b
                             SizedBox(
                               height: 30,
                               width: 30,
-                              child: Image.asset('assets/evento.png'),
+                              child: evento.foto != null ? Image.network(evento.foto!) : Image.asset('assets/evento.png'),
                             )
                           ],
                         ),
@@ -80,7 +80,7 @@ Widget cardEvento({required BuildContext context, required EventoModel evento, b
                         mainAxisAlignment: MainAxisAlignment.start,
                         crossAxisAlignment: CrossAxisAlignment.start,
                         children: [
-                          textLabel(label: 'Local', value: '${evento.localEvento!} - ${evento.formatarData()}'),
+                          textLabel(label: 'Data', value: '${evento.formatarData()}'),
                         ],
                       ),
                     ],

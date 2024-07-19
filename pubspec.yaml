@@ -39,6 +39,9 @@ dependencies:
   provider:
   mobx:
   flutter_mobx:
+  image_picker:
+  image_picker_ios:
+  google_maps_flutter:
   http: ^0.13.5
   shared_preferences: ^2.0.6 
 
