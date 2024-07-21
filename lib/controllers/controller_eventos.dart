@@ -1,10 +1,13 @@
 import 'dart:convert';
+import 'dart:io';
+import 'package:http/http.dart' as http;
 
 import 'package:event_app/api/Api.dart';
 import 'package:event_app/models/evento_model.dart';
 import 'package:mobx/mobx.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 part 'controller_eventos.g.dart';
+
 
 class ControllerEventos = ControllerEventosBase with _$ControllerEventos;
 
@@ -83,18 +86,21 @@ abstract class ControllerEventosBase with Store {
   }
 
   @action
-  Future<void> add_evento(EventoModel e) async {
+  Future<void> add_evento(EventoModel e, File ? imageFile) async {
 
     final _preff =  await SharedPreferences.getInstance();
     String ? id = _preff.getString('id');
+    var response;
 
-    final response = await ApiClient().POST('/eventos/', {
+    response = await ApiClient().POST_MULTPART('/eventos/',{
         "id_usuario": id,
         "nome": e.nomeEvento,
         "descricao": e.descricaoEvento,
-        "local": e.localEvento,
-        "data": e.dataEvento!.toIso8601String()
-    });
+        "data": e.dataEvento!.toIso8601String(),
+        "latitude": e.latitude,
+        "longitude": e.longitude
+    }, imageFile);
+
 
     if(response.statusCode == 200){
       final data = jsonDecode(response.body);
@@ -104,7 +110,7 @@ abstract class ControllerEventosBase with Store {
   }
 
   @action
-  Future<void> update_evento(EventoModel e) async {
+  Future<void> update_evento(EventoModel e, File ? imageFile) async {
 
     final _preff =  await SharedPreferences.getInstance();
     String ? id = _preff.getString('id');
@@ -113,16 +119,17 @@ abstract class ControllerEventosBase with Store {
         "id_usuario": id,
         "nome": e.nomeEvento,
         "descricao": e.descricaoEvento,
-        "local": e.localEvento,
-        "data": e.dataEvento!.toIso8601String()
+        "data": e.dataEvento!.toIso8601String(),
+        "latitude": e.latitude,
+        "longitude": e.longitude
     });
   }
   @action
-  Future<void> upsert(EventoModel e) async {
+  Future<void> upsert(EventoModel e, File ? imageFile) async {
     if(e.id != null){
-      await update_evento(e);
+      await update_evento(e, imageFile);
     } else {
-      await add_evento(e);
+      await add_evento(e, imageFile);
     }
 
     await trazer_eventos();
