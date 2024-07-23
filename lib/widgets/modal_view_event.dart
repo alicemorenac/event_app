@@ -1,8 +1,9 @@
 import 'package:event_app/models/evento_model.dart';
 import 'package:flutter/material.dart';
+import 'package:google_maps_flutter/google_maps_flutter.dart';
 
 void modalVisualizarEvento(BuildContext context, EventoModel evento) {
-
+  GoogleMapController? _controller;
   showModalBottomSheet<void>(
     context: context,
     builder: (BuildContext context) {
@@ -48,17 +49,51 @@ void modalVisualizarEvento(BuildContext context, EventoModel evento) {
               ),
               Center(
                 child: Padding(
-                  padding: const EdgeInsets.only(top: 5, bottom: 15),
-                  child: Text('${evento.localEvento}',
-                      style: const TextStyle(
-                          color: Colors.white, fontSize: 16)),
+                  padding: const EdgeInsets.only(top: 5, bottom: 5),
+                  child:      Padding(
+                  padding: const EdgeInsets.symmetric(horizontal: 30.0),
+                  child: Container(
+                    height: 150,
+                    width: 1500,
+                    decoration: BoxDecoration(
+                      border: Border.all(color: Colors.grey, width: 1.0),
+                      borderRadius: BorderRadius.circular(8.0),
+                    ),
+                    child: GoogleMap(
+                      initialCameraPosition: CameraPosition(
+                        target: LatLng(double.parse(evento.latitude!), double.parse(evento.longitude!)),
+                        zoom: 14.0,
+                      ),
+                      zoomControlsEnabled: false,
+                      scrollGesturesEnabled: false,
+                      // onTap: (argument){
+                      //    Navigator.push(
+                      //   context,
+                      //   MaterialPageRoute(builder: (context) => MapScreen(onLocationPicked: onLocationPicked, initialLocation: _latLng)),
+                      // );
+                      // } ,
+                      onMapCreated: (controller) {
+                        _controller = controller;
+                        LatLng ll = LatLng(double.parse(evento.latitude!), double.parse(evento.longitude!));
+                        _controller!.animateCamera(
+                          CameraUpdate.newLatLng(ll),
+                        );
+                      },
+                                    tiltGesturesEnabled: false,
+                      rotateGesturesEnabled: false,
+                      myLocationButtonEnabled: false,
+                      markers: {
+                        Marker(
+                          markerId: const MarkerId('marker'),
+                          position: LatLng(double.parse(evento.latitude!), double.parse(evento.longitude!)),
+                        ),
+                      },
+                    ),
+                  ),
                 ),
-              ),
-              SizedBox(
-                width: 150,
-                height: 150,
-                child: Image.asset('assets/qr-code.png'),
-              ),
+              )),
+            
+              
               Padding(
                 padding: const EdgeInsets.symmetric(vertical: 20),
                 child: Container(
