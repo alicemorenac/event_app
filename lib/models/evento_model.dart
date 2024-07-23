@@ -1,17 +1,22 @@
+import 'package:event_app/api/Api.dart';
 import 'package:flutter/material.dart';
 class EventoModel extends ChangeNotifier {
   String? id;
   String? nomeEvento;
   String? descricaoEvento;
-  String? localEvento;
+  String? latitude;
+  String? longitude;
+  String? foto;
   DateTime? dataEvento;
 
   EventoModel({
     this.id,
     this.dataEvento,
     this.descricaoEvento,
-    this.localEvento,
     this.nomeEvento,
+    this.latitude,
+    this.longitude,
+    this.foto,
   }){
     dataEvento = DateTime.now();
   }
@@ -31,8 +36,14 @@ class EventoModel extends ChangeNotifier {
     notifyListeners();
   }
 
-  void setLocal(String ? localEvento) {
-    this.localEvento = localEvento;
+
+  void setLatitude(String ? latitude) {
+    this.latitude = latitude;
+    notifyListeners();
+  }
+
+  void setLongitude(String ? longitude) {
+    this.longitude = longitude;
     notifyListeners();
   }
 
@@ -49,8 +60,10 @@ class EventoModel extends ChangeNotifier {
     id = '';
     nomeEvento = '';
     descricaoEvento = '';
-    localEvento = '';
     dataEvento = DateTime.now();
+    latitude = '';
+    longitude = '';
+    foto = '';
   }
 
   factory EventoModel.fromJson(Map<String, dynamic> json) {
@@ -58,8 +71,10 @@ class EventoModel extends ChangeNotifier {
       id: json['id'].toString(),
       nomeEvento: json['nome'],
       descricaoEvento: json['descricao'],
-      localEvento: json['local'],
       dataEvento: DateTime.parse(json['data']),
+      latitude: json['latitude'],
+      longitude: json['longitude'],
+      foto: ApiClient().baseURI + '/static/uploaders/' + json['foto']
     );
   }
 
@@ -68,8 +83,10 @@ class EventoModel extends ChangeNotifier {
       'id': id,
       'nome': nomeEvento,
       'descricao': descricaoEvento,
-      'local': localEvento,
       'data': dataEvento!.toIso8601String(),
+      'latitude': latitude,
+      'longitude': longitude,
+      'foto': ApiClient().baseURI + '/api/public/uploaders/' + foto
     };
   }
 
