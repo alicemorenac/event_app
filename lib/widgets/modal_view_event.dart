@@ -82,4 +82,3 @@ void modalVisualizarEvento(BuildContext context, EventoModel evento) {
     },
   );
 }
-
