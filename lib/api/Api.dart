@@ -50,6 +50,31 @@ class ApiClient {
 
     return http.Response(responseBody, response.statusCode);
   }
+  Future<http.Response> PUT_MULTPART (String endpoint, dynamic body, File? file) async {
+    final request = http.MultipartRequest('PUT', Uri.parse('$_baseUrl$endpoint'));
+
+    body.forEach((key, value) {
+      request.fields[key] = value;
+    });
+
+
+    if (file != null) {
+      request.files.add(
+        http.MultipartFile(
+          'foto', 
+          file.readAsBytes().asStream(),
+          await file.length(),
+          filename: path.basename(file.path),
+        ),
+      );
+    }
+
+    // Envia a requisição
+    final response = await request.send();
+    final responseBody = await response.stream.bytesToString();
+
+    return http.Response(responseBody, response.statusCode);
+  }
 
   Future<http.Response> PUT(String endpoint, dynamic data) async {
     return await http.put(
