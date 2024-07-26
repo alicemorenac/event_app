@@ -22,10 +22,16 @@ class _ModalNewEventoState extends State<ModalNewEvento> {
   final imagePicker = ImagePicker();
   XFile? xfile;
   File? file;
-  late LatLng _latLng = const LatLng(-5.801411, -35.3046081);
-  late EventoModel evento;
- GoogleMapController? _controller;
+  late LatLng _latLng = LatLng(
+      widget.eventoModel != null && widget.eventoModel!.latitude != null
+          ? double.parse(widget.eventoModel!.latitude.toString())
+          : -5.801411,
+      widget.eventoModel != null && widget.eventoModel!.longitude != null
+          ? double.parse(widget.eventoModel!.longitude.toString())
+          : -35.3046081);
 
+  late EventoModel evento;
+  GoogleMapController? _controller;
 
   @override
   void initState() {
@@ -40,6 +46,14 @@ class _ModalNewEventoState extends State<ModalNewEvento> {
             dataEvento: widget.eventoModel!.dataEvento ?? DateTime.now(),
           )
         : EventoModel();
+
+    WidgetsBinding.instance.addPostFrameCallback((_) {
+      if (_controller != null) {
+        _controller!.animateCamera(
+          CameraUpdate.newLatLng(_latLng),
+        );
+      }
+    });
   }
 
   pick(ImageSource src) async {
@@ -53,7 +67,7 @@ class _ModalNewEventoState extends State<ModalNewEvento> {
   onLocationPicked(LatLng latLng) {
     setState(() {
       _latLng = latLng;
-      if(latLng != null){
+      if (latLng != null) {
         _controller!.animateCamera(
           CameraUpdate.newLatLng(latLng!),
         );
@@ -81,10 +95,16 @@ class _ModalNewEventoState extends State<ModalNewEvento> {
                 Padding(
                   padding: const EdgeInsets.symmetric(vertical: 10),
                   child: file == null
-                      ? SizedBox(
-                          width: 60,
-                          height: 60,
-                          child: Image.asset('assets/evento.png'),
+                      ? CircleAvatar(
+                          radius: 60,
+                          backgroundColor: Colors.black,
+                          backgroundImage: widget.eventoModel != null &&
+                                  widget.eventoModel!.foto != null &&
+                                  widget.eventoModel!.foto!.isNotEmpty
+                              ? NetworkImage(widget.eventoModel!.foto!)
+                                  as ImageProvider<Object>
+                              : const AssetImage('assets/evento.png')
+                                  as ImageProvider<Object>,
                         )
                       : CircleAvatar(
                           radius: 60,
@@ -171,16 +191,19 @@ class _ModalNewEventoState extends State<ModalNewEvento> {
                       ),
                       // zoomControlsEnabled: false,
                       // scrollGesturesEnabled: false,
-                      onTap: (argument){
-                         Navigator.push(
-                        context,
-                        MaterialPageRoute(builder: (context) => MapScreen(onLocationPicked: onLocationPicked, initialLocation: _latLng)),
-                      );
-                      } ,
+                      onTap: (argument) {
+                        Navigator.push(
+                          context,
+                          MaterialPageRoute(
+                              builder: (context) => MapScreen(
+                                  onLocationPicked: onLocationPicked,
+                                  initialLocation: _latLng)),
+                        );
+                      },
                       onMapCreated: (controller) {
                         _controller = controller;
                       },
-                                    // tiltGesturesEnabled: false,
+                      // tiltGesturesEnabled: false,
                       // rotateGesturesEnabled: false,
                       // myLocationButtonEnabled: false,
                       markers: {
@@ -227,7 +250,6 @@ class _ModalNewEventoState extends State<ModalNewEvento> {
                   padding: const EdgeInsets.symmetric(horizontal: 30.0),
                   child: ElevatedButton(
                     onPressed: () {
-                      
                       evento.setLatitude(_latLng.latitude.toString());
                       evento.setLongitude(_latLng.longitude.toString());
 
