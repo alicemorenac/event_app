@@ -1,176 +1,108 @@
-import 'dart:convert';
-import 'dart:io';
-import 'package:http/http.dart' as http;
+// GENERATED CODE - DO NOT MODIFY BY HAND
 
-import 'package:event_app/api/Api.dart';
-import 'package:event_app/models/evento_model.dart';
-import 'package:mobx/mobx.dart';
-import 'package:shared_preferences/shared_preferences.dart';
-part 'controller_eventos.g.dart';
+part of 'controller_eventos.dart';
 
+// **************************************************************************
+// StoreGenerator
+// **************************************************************************
 
-class ControllerEventos = ControllerEventosBase with _$ControllerEventos;
+// ignore_for_file: non_constant_identifier_names, unnecessary_brace_in_string_interps, unnecessary_lambdas, prefer_expression_function_bodies, lines_longer_than_80_chars, avoid_as, avoid_annotating_with_dynamic, no_leading_underscores_for_local_identifiers
 
-abstract class ControllerEventosBase with Store {
-  @observable
-  ObservableList<EventoModel> _eventos = ObservableList.of([]);
-  ObservableList<EventoModel> _favoritos = ObservableList.of([]);
-  ObservableList<EventoModel> _meus_eventos = ObservableList.of([]);
+mixin _$ControllerEventos on ControllerEventosBase, Store {
+  late final _$_eventosAtom =
+      Atom(name: 'ControllerEventosBase._eventos', context: context);
 
-
-  ObservableList<EventoModel> get eventos => _eventos;
-  ObservableList<EventoModel> get favoritos => _favoritos;
-  ObservableList<EventoModel> get meus_eventos => _meus_eventos;
-
-
-  @action
-  Future<void> trazer_eventos() async {
-    final _preff =  await SharedPreferences.getInstance();
-    String ? id = _preff.getString('id');
-
-    final response = await ApiClient().GET("/eventos");
-
-    if (response.statusCode != 200) throw Error();
-
-    List<dynamic> jsonList = jsonDecode(response.body);
-
-    _meus_eventos = ObservableList.of(
-        jsonList
-          .where((json) => json['id_usuario'].toString() == id)
-          .map((e) => EventoModel.fromJson(e)).toList(),
-      );
-
-    _eventos = ObservableList.of(
-      jsonList.map((json) => EventoModel.fromJson(json)).toList(),
-    );
+  @override
+  ObservableList<EventoModel> get _eventos {
+    _$_eventosAtom.reportRead();
+    return super._eventos;
   }
 
-  @action
-  Future<void> trazer_favoritos() async {
-    _favoritos = ObservableList.of([]);
-    final _preff =  await SharedPreferences.getInstance();
-    String ? id = _preff.getString('id');
-
-    final response = await ApiClient().GET('/usuarios/$id/eventos_favoritos');
-    if (response.statusCode != 200) {
-      return;
-    }
-
-    List<dynamic> jsonList = jsonDecode(response.body);
-
-    for (int i = 0; i < jsonList.length; i++){
-      final id_evento = jsonList[i]['id_evento'];
-      if(jsonList[i]['id_usuario'].toString() == id){
-        final evResponse = await ApiClient().GET('/eventos/$id_evento');
-
-        if(evResponse.statusCode == 200){
-          _favoritos.add(EventoModel.fromJson(jsonDecode(evResponse.body)));
-        }
-      }
-    }
-  }
-
-
-  @action
-  Future<void> tooggle_favorito(EventoModel e) async {
-    final _preff =  await SharedPreferences.getInstance();
-    String ? id = _preff.getString('id');
-
-    if (!isFavorite(e)){
-      await ApiClient().POST('/usuarios/$id/favoritar', {'id_evento': e.id});
-       _favoritos.add(e);
-    } else {
-       final response = await ApiClient().DELETE('/usuarios/$id/eventos_favoritos/${e.id}');  
-      _favoritos.removeWhere((fav) => fav.id == e.id);
-    }
-  }
-
-  @action
-  Future<void> add_evento(EventoModel e, File ? imageFile) async {
-
-    final _preff =  await SharedPreferences.getInstance();
-    String ? id = _preff.getString('id');
-    var response;
-
-    response = await ApiClient().POST_MULTPART('/eventos/',{
-        "id_usuario": id,
-        "nome": e.nomeEvento,
-        "descricao": e.descricaoEvento,
-        "data": e.dataEvento!.toIso8601String(),
-        "latitude": e.latitude,
-        "longitude": e.longitude
-    }, imageFile);
-
-
-    if(response.statusCode == 200){
-      final data = jsonDecode(response.body);
-      e.setId(data['id'].toString());
-      _add(e);
-    }
-  }
-
-  @action
-  Future<void> update_evento(EventoModel e, File ? imageFile) async {
-
-    final _preff =  await SharedPreferences.getInstance();
-    String ? id = _preff.getString('id');
-
-    await ApiClient().PUT('/eventos/${e.id}', {
-        "id_usuario": id,
-        "nome": e.nomeEvento,
-        "descricao": e.descricaoEvento,
-        "data": e.dataEvento!.toIso8601String(),
-        "latitude": e.latitude,
-        "longitude": e.longitude
+  @override
+  set _eventos(ObservableList<EventoModel> value) {
+    _$_eventosAtom.reportWrite(value, super._eventos, () {
+      super._eventos = value;
     });
   }
-  @action
-  Future<void> upsert(EventoModel e, File ? imageFile) async {
-    if(e.id != null){
-      await update_evento(e, imageFile);
-    } else {
-      await add_evento(e, imageFile);
+
+  late final _$trazer_eventosAsyncAction =
+      AsyncAction('ControllerEventosBase.trazer_eventos', context: context);
+
+  @override
+  Future<void> trazer_eventos() {
+    return _$trazer_eventosAsyncAction.run(() => super.trazer_eventos());
+  }
+
+  late final _$trazer_favoritosAsyncAction =
+      AsyncAction('ControllerEventosBase.trazer_favoritos', context: context);
+
+  @override
+  Future<void> trazer_favoritos() {
+    return _$trazer_favoritosAsyncAction.run(() => super.trazer_favoritos());
+  }
+
+  late final _$tooggle_favoritoAsyncAction =
+      AsyncAction('ControllerEventosBase.tooggle_favorito', context: context);
+
+  @override
+  Future<void> tooggle_favorito(EventoModel e) {
+    return _$tooggle_favoritoAsyncAction.run(() => super.tooggle_favorito(e));
+  }
+
+  late final _$add_eventoAsyncAction =
+      AsyncAction('ControllerEventosBase.add_evento', context: context);
+
+  @override
+  Future<void> add_evento(EventoModel e, File? imageFile) {
+    return _$add_eventoAsyncAction.run(() => super.add_evento(e, imageFile));
+  }
+
+  late final _$update_eventoAsyncAction =
+      AsyncAction('ControllerEventosBase.update_evento', context: context);
+
+  @override
+  Future<void> update_evento(EventoModel e, File? imageFile) {
+    return _$update_eventoAsyncAction
+        .run(() => super.update_evento(e, imageFile));
+  }
+
+  late final _$upsertAsyncAction =
+      AsyncAction('ControllerEventosBase.upsert', context: context);
+
+  @override
+  Future<void> upsert(EventoModel e, File? imageFile) {
+    return _$upsertAsyncAction.run(() => super.upsert(e, imageFile));
+  }
+
+  late final _$ControllerEventosBaseActionController =
+      ActionController(name: 'ControllerEventosBase', context: context);
+
+  @override
+  dynamic _add(EventoModel e) {
+    final _$actionInfo = _$ControllerEventosBaseActionController.startAction(
+        name: 'ControllerEventosBase._add');
+    try {
+      return super._add(e);
+    } finally {
+      _$ControllerEventosBaseActionController.endAction(_$actionInfo);
     }
-
-    await trazer_eventos();
-    await trazer_favoritos();
   }
 
-
-
-  Future<void> deletar_evento(EventoModel e) async {
-
-    final _preff =  await SharedPreferences.getInstance();
-    String ? id = _preff.getString('id');
-
-    await ApiClient().DELETE('/eventos/${e.id}');
-    
-    _remove(e);
-    
-    await trazer_eventos();
-    await trazer_favoritos();
-
-  }
-  
-  @action
-  _add(EventoModel e) {
-    _eventos.add(e);
-    _meus_eventos.add(e);
-  }
-  
-  @action
-  _remove(EventoModel e) {
-    if (!_existe(e)) {
-      _eventos.remove(e);
-      _meus_eventos.remove(e);
+  @override
+  dynamic _remove(EventoModel e) {
+    final _$actionInfo = _$ControllerEventosBaseActionController.startAction(
+        name: 'ControllerEventosBase._remove');
+    try {
+      return super._remove(e);
+    } finally {
+      _$ControllerEventosBaseActionController.endAction(_$actionInfo);
     }
   }
-  
-  bool isFavorite(EventoModel e){
-    return _favoritos.any((element) => e.id == element.id);
-  }
 
-  bool _existe(EventoModel e) {
-    return eventos.any((ev) => ev.id == e.id);
+  @override
+  String toString() {
+    return '''
+
+    ''';
   }
 }
