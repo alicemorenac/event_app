@@ -43,7 +43,8 @@ dependencies:
   image_picker_ios:
   google_maps_flutter:
   http: ^0.13.5
-  shared_preferences: ^2.0.6 
+  shared_preferences: ^2.0.6
+  onesignal_flutter: ^5.1.2
 
 dev_dependencies:
   mobx_codegen:

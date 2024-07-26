@@ -12,11 +12,20 @@ import 'package:event_app/utils/app_routes.dart';
 import 'package:event_app/widgets/modal_add_coment.dart';
 import 'package:event_app/widgets/modal_add_evento.dart';
 import 'package:provider/provider.dart';
+import 'package:onesignal_flutter/onesignal_flutter.dart';
 
 import './pages/login.dart';
 import 'package:flutter/material.dart';
 
+
+
 void main() {
+  WidgetsFlutterBinding.ensureInitialized();
+  //Remove this method to stop OneSignal Debugging
+  OneSignal.Debug.setLogLevel(OSLogLevel.verbose);
+  OneSignal.initialize("4315d502-c70b-4e49-addd-e52f41837762");
+// The promptForPushNotificationsWithUserResponse function will show the iOS or Android push notification prompt. We recommend removing the following code and instead using an In-App Message to prompt for notification permission
+  OneSignal.Notifications.requestPermission(true);
   // runApp();
 
   runApp(MultiProvider(providers: [
